@@ -3,9 +3,10 @@ import './App.css';
 function App() {
   const name = <h1>react</h1>;
   return (
-    <div className="App">
-      {name}{name}
-    </div>
+    // <div className="App">
+    //   {name}{name} // u called a variable/ function
+    // </div>
+    <GetNameComponent /> // u called a component
   );
 }
 
