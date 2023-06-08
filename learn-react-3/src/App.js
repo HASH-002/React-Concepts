@@ -1,34 +1,24 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Axios from "axios";
 
 function App() {
-  const [catfact, setCatfact] = useState("");
+  const [name, setName] = useState("");
+  const [info, setInfo] = useState(null);
 
-  /*
-    * This will be called every time when we update the state (here catfact, setCatfact)
-    * So it will go for infinite time, without setState it would have been called twice as
-    because of StrcitMode.
-    * But because of updating it will be rendered infinite times.
-  */
-  // Axios.get("https://catfact.ninja/fact").then((res) => {
-  //     setCatfact(res.data.fact);
-  //   });
-
-  useEffect(() => {
-    getCatFact();
-  }, []);
-
-  const getCatFact = () => {
-    Axios.get("https://catfact.ninja/fact").then((res) => {
-      setCatfact(res.data.fact);
+  const getInfo = () => {
+    Axios.get(`https://api.agify.io?name=${name}`).then((res) => {
+      console.log(res.data);
+      setInfo(res.data);
     });
   };
 
   return (
     <div div className="App" >
-      <button onClick={getCatFact}> Generate Cat Fact </button>
-      <p>{catfact}</p>
+      <input onChange={(e) => setName(e.target.value)} />
+      <button onClick={getInfo}> Predict Age </button>
+      {/* Amazaing syntax in js if variable is not null then only access it property == variable?.property */}
+      <p>Name: {info?.name} Age: {info?.age}</p>
     </div>
   );
 }
