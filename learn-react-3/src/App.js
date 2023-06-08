@@ -1,28 +1,24 @@
 import "./App.css";
 import { useState } from "react";
-import { Text } from "./Text";
-
-/*
-  Component Lifecycle 
-  1. Mounting --> When a component appears on screen
-  2. Updating --> Rerendering of component
-  3. Unmounting --> When a component disappears from screen
-*/
 
 function App() {
-  const [showText, setShowText] = useState(false);
+
+  /*
+  FETCH FUNCTION
+  Fetch function maybe before javascript was there was used to get data from apis' 
+  We use (then) since this returns a promise which is json format then we convert it to
+  string and then use this data.
+  */
+  const getFact = () => {
+    fetch("https://catfact.ninja/fact").then((res) => res.json()).then((data) => {
+      console.log(data);
+    });
+  };
 
   return (
     <div className="App">
-      <button
-        onClick={() => {
-          setShowText(!showText);
-        }}
-      >
-        Show Text
-      </button>
-      {/* When Text appears (mounting) and when text disappears (unmounting) */}
-      {showText && <Text />}
+      <button onClick={getFact}> Generate Cat Fact </button>
+      <p></p>
     </div>
   );
 }
