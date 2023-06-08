@@ -1,24 +1,34 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Axios from "axios";
 
 function App() {
+  const [catfact, setCatfact] = useState("");
 
   /*
-  FETCH FUNCTION
-  Fetch function maybe before javascript was there was used to get data from apis' 
-  We use (then) since this returns a promise which is json format then we convert it to
-  string and then use this data.
+    * This will be called every time when we update the state (here catfact, setCatfact)
+    * So it will go for infinite time, without setState it would have been called twice as
+    because of StrcitMode.
+    * But because of updating it will be rendered infinite times.
   */
-  const getFact = () => {
-    fetch("https://catfact.ninja/fact").then((res) => res.json()).then((data) => {
-      console.log(data);
+  // Axios.get("https://catfact.ninja/fact").then((res) => {
+  //     setCatfact(res.data.fact);
+  //   });
+
+  useEffect(() => {
+    getCatFact();
+  }, []);
+
+  const getCatFact = () => {
+    Axios.get("https://catfact.ninja/fact").then((res) => {
+      setCatfact(res.data.fact);
     });
   };
 
   return (
-    <div className="App">
-      <button onClick={getFact}> Generate Cat Fact </button>
-      <p></p>
+    <div div className="App" >
+      <button onClick={getCatFact}> Generate Cat Fact </button>
+      <p>{catfact}</p>
     </div>
   );
 }
