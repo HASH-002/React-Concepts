@@ -1,7 +1,7 @@
-export const Home = () => {
+export const Home = (props) => {
     return (
         <div>
-            <h1>Home</h1>
+            <h1>Home and username is : {props.userName}</h1>
         </div>
     );
 };
