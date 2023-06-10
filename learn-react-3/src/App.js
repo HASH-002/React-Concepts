@@ -1,38 +1,37 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState, createContext } from "react";
 import { Home } from "./pages/Home";
-import { Profile } from "./pages/Profile";
-import { Contact } from "./pages/Contact";
-import Navbar from "./Navbar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 /*
-  Context Api: Keep all react States in one place and every compoenent inside it, can access it.
-  1. Create a context using createContext() method. We create a Global Context, picturise it as a Store,
-  where we keep all our states.
-  2. Create a Provider, which will provide the states you need to paas on to all the components.
-  3. Use the useContext hook to access the states from the context. 
+  * We used to gt fetched data twice because of StrictMode while using fetch function or axios.
+  * To solve this problem, there is something called useQuery from react-query.
+  * We first need to wrap all the components with QueryClientProvider.
+  * Then we need to create a client using QueryClient, in which we will mention query or mutation and provide
+  it to provider so it will unsderstand what to do.
+  * refetchOnWindowFocus is a property which will not refetch the data when we switch the tab.
 */
 
-export const AppContext = createContext(); // Create a context here
 
 function App() {
-  const [userName, setUserName] = useState("Hasan");
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      }
+    }
+  });
 
   return (
     <div className="App">
-      {/* Wrap all the components inside the Provider, so that all the components can access the states */}
-      <AppContext.Provider value={{ userName, setUserName }}>
+      <QueryClientProvider client={client}>
         <Router>
-          <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<h1>You are on wrong page</h1>} />
           </Routes>
         </Router>
-      </AppContext.Provider>
+      </QueryClientProvider>
     </div>
   );
 }
